@@ -1,7 +1,7 @@
 package com.bipal.scheduler.service;
 
-import com.bipal.scheduler.model.JobDTO;
-import com.bipal.scheduler.model.ScheduleDTO;
+import com.bipal.scheduler.model.JobInfo;
+import com.bipal.scheduler.model.Schedule;
 import com.bipal.scheduler.model.SchedulerConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,11 +42,11 @@ public class SchedulerServiceTest {
         long endTime = startTime + TimeUnit.DAYS.toMillis(1);
         int repeatInterval = 1;
         int repeatCount = 2;
-        ScheduleDTO scheduleDTO = new ScheduleDTO(startTime, endTime, repeatInterval, repeatCount);
 
-        JobDTO jobDTO = new JobDTO("test", "group", "test job", "testurl.com/test", "{\"hello\"}");
+        JobInfo jobInfo = new JobInfo("test", "group", "test job", "testurl.com/test", "{\"hello\"}");
+        Schedule schedule = new Schedule(startTime, endTime, repeatInterval, repeatCount, jobInfo);
 
-        JobKey jobKey = schedulerService.schedule(scheduleDTO, jobDTO);
+        JobKey jobKey = schedulerService.schedule(schedule);
 
         ArgumentCaptor<JobDetail> captorJobDetails = ArgumentCaptor.forClass(JobDetail.class);
         ArgumentCaptor<Trigger> captorTrigger = ArgumentCaptor.forClass(Trigger.class);
@@ -62,6 +62,19 @@ public class SchedulerServiceTest {
         assertNotNull(jobKey);
         assertEquals("test", jobKey.getName());
         assertEquals("group", jobKey.getGroup());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void scheduleSimpleScheduleBadJobInfo() throws SchedulerException {
+        long startTime = System.currentTimeMillis();
+        long endTime = startTime + TimeUnit.DAYS.toMillis(1);
+        int repeatInterval = 1;
+        int repeatCount = 2;
+
+        JobInfo jobInfo = new JobInfo(null, null, "test job", "testurl.com/test", "{\"hello\"}");
+        Schedule schedule = new Schedule(startTime, endTime, repeatInterval, repeatCount, jobInfo);
+
+        JobKey jobKey = schedulerService.schedule(schedule);
     }
 
     @Test

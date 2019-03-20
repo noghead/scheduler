@@ -1,8 +1,8 @@
 package com.bipal.scheduler.service;
 
 import com.bipal.scheduler.job.GenericPostJob;
-import com.bipal.scheduler.model.JobDTO;
-import com.bipal.scheduler.model.ScheduleDTO;
+import com.bipal.scheduler.model.JobInfo;
+import com.bipal.scheduler.model.Schedule;
 import com.bipal.scheduler.model.SchedulerConstants;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -30,17 +30,18 @@ public class SchedulerServiceImpl implements SchedulerService {
     }
 
     @Override
-    public JobKey schedule(ScheduleDTO schedule, JobDTO jobDTO) throws SchedulerException {
-        JobKey jobKey = new JobKey(jobDTO.getJobName(), jobDTO.getJobGroup());
+    public JobKey schedule(Schedule schedule) throws SchedulerException {
+        JobInfo jobInfo = schedule.getJobInfo();
+        JobKey jobKey = new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup());
 
         JobDetail jobDetail = JobBuilder.newJob(GenericPostJob.class)
                 .withIdentity(jobKey)
-                .usingJobData(SchedulerConstants.POST_URL_KEY, jobDTO.getPostUrl())
-                .usingJobData(SchedulerConstants.POST_PAYLOAD_KEY, jobDTO.getPostPayload())
-                .withDescription(jobDTO.getJobDescription())
+                .usingJobData(SchedulerConstants.POST_URL_KEY, jobInfo.getPostUrl())
+                .usingJobData(SchedulerConstants.POST_PAYLOAD_KEY, jobInfo.getPostPayload())
+                .withDescription(jobInfo.getJobDescription())
                 .build();
 
-        SimpleTrigger trigger = createTrigger(jobDetail, schedule, jobDTO);
+        SimpleTrigger trigger = createTrigger(jobDetail, schedule, jobInfo);
 
         if (scheduler.checkExists(jobKey)) {
             scheduler.deleteJob(jobKey);
@@ -50,18 +51,18 @@ public class SchedulerServiceImpl implements SchedulerService {
         return trigger.getJobKey();
     }
 
-    private SimpleTrigger createTrigger(JobDetail jobDetail, ScheduleDTO schedule, JobDTO jobDTO) {
+    private SimpleTrigger createTrigger(JobDetail jobDetail, Schedule schedule, JobInfo jobInfo) {
         Date startTime = schedule.getStartTimeEpochMillis() == 0L ? new Date() : new Date(schedule.getStartTimeEpochMillis());
         Date endTime = schedule.getEndTimeEpochMillis() == 0L ? null : new Date(schedule.getEndTimeEpochMillis());
 
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail)
-                .withIdentity(jobDTO.getJobName(), jobDTO.getJobGroup())
-                .withDescription(jobDTO.getJobDescription())
+                .withIdentity(jobInfo.getJobName(), jobInfo.getJobGroup())
+                .withDescription(jobInfo.getJobDescription())
                 .startAt(startTime)
                 .endAt(endTime)
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                        .withIntervalInSeconds(schedule.getRepeatIntervalSeconds())
+                        .withIntervalInMilliseconds(schedule.getRepeatIntervalMillis())
                         .withRepeatCount(schedule.getRepeatCount())
                         .withMisfireHandlingInstructionFireNow())
                 .build();
