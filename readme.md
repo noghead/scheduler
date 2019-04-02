@@ -6,4 +6,4 @@ Intended to be used to schedule anything given a schedule, url, and payload.
 
 Schedule - Defined in Cron or Simple Schedule.
 URL - Where to deliver payload to.
-Payload - POST Payload to deliver on the above schedule.
+Payload - POST Payload to deliver on the set schedule.
