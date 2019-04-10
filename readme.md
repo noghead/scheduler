@@ -1,8 +1,8 @@
-#About the Project
-This scheduler is a spring boot application that uses the [Quartz] (https://github.com/quartz-scheduler).
+# bout the Project
+This scheduler is a spring boot application that uses the [Quartz](https://github.com/quartz-scheduler).
 Intended to be used to schedule anything given a schedule, url, and payload.
 
-##Getting started
+## etting started
 The application is ready build and use after checkout. By default it will use an in memory database to save schedules. This is intended to be used for testing purposes. 
 For persisted storage, see section in application.properties to use mysql.
 
@@ -13,8 +13,8 @@ After checking out the repo*
 
 *This runs on windows as well. Use gradlew.bat in step 3 to run.
 
-####Use scheduler's api to schedule something.
-Once the application is running. You can see the schedule's [swagger page] (http://localhost:8080/swagger-ui.html)
+#### se scheduler's api to schedule something.
+Once the application is running. You can see the schedule's [swagger page](http://localhost:8080/swagger-ui.html)
 
 Run the demo schedule. In a console; make a post to /scheduler/schedule with a JSON body that contains your schedule information.
 ```
@@ -62,7 +62,7 @@ This is what the Schedule request payload looks like (more readable).
 | git diff | Show file differences that haven't been staged |
 
 
-####Configure with In memory datbase.
+#### onfigure with In memory datbase.
 Use these settings in application.properties
 ```
 spring.datasource.url=jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -70,7 +70,7 @@ spring.datasource.driverClassName=org.h2.Driver
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 ```
 
-####Configure with mysql database.
+#### onfigure with mysql database.
 Use these settings in application.properties. Replace values for your database.
 ```
 spring.quartz.job-store-type=jdbc
