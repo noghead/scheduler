@@ -5,6 +5,8 @@ This scheduler is a spring boot application that allows you to schedule anything
 The application is ready to build and use after checkout. By default it will use an in memory database to save schedules. This is intended to be used for testing purposes. 
 For persisted storage, see comments in application.properties or see section below about configuring with mysql.
 
+#### Running the scheduler appliation.
+
 After checking out the repo*
 1. Open a terminal.
 2. cd to root of project.
@@ -12,10 +14,27 @@ After checking out the repo*
 
 *This runs on windows as well. Use gradlew.bat in step 3 to run.
 
-#### Use scheduler's api to schedule something.
-Once the application is running. You can see the schedule's [swagger page](http://localhost:8080/swagger-ui.html)
+#### Quick Demo.
+Once the application is running. You can see the schedule's swagger page at http://localhost:8080/swagger-ui.html
 
-Run the demo schedule. In a console; make a post to /scheduler/schedule with a JSON body that contains your schedule information.
+Use this JSON payload in swagger (or postman) to POST to http://localhost:8080/scheduler/schedule
+```json
+{
+  "startTimeEpochMillis": 0,
+  "endTimeEpochMillis": 0,
+  "repeatIntervalMillis": 1000,
+  "repeatCount": 2,
+  "jobInfo": {
+    "jobName": "My Job Name",
+    "jobGroup": "My Job Group",
+    "jobDescription": "Description of Job",
+    "postUrl": "http://localhost:8080/scheduler/echo",
+    "postPayload": "Hello Scheduler"
+  }
+}
+```
+
+Alternatively,  you can use curl.
 ```
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"endTimeEpochMillis":0,"jobInfo":{"jobDescription":"Description of Job","jobGroup":"My Job Group","jobName":"My Job Name","postPayload":"Hello Scheduler","postUrl":"http://localhost:8080/scheduler/echo"},"repeatCount":2,"repeatIntervalMillis":1000,"startTimeEpochMillis":0}' 'http://localhost:8080/scheduler/schedule'
 ```
@@ -34,32 +53,24 @@ Echoing Hello Scheduler
 ```
 
 What is happening
-1. We told the scheduler to post a payload "Hello Scheduler" to localhost:8080/scheduler/echo
-2. We said repeat it 2x (total of 3).
-3. Thus,  we see logs from scheduler and the echo endpoint 3 times.
+1. Our job description was "Description of Job" so we see that its executing.
+2. Next we see that its finished executing.
+3. Then we see a log echoing "Hello Scheduler" which is what was in our post payload. Normally you'd a POST url for your own app. For demo purposes, this is posting to an echo endpoint on the Scheduler itself.
+4. This executes three times because we scheduled this job to repeat twice. I.E. It executes the job and repeats two more times.
 
-This is what the Schedule request payload looks like (more readable).
+### Schedule Request Payload Explained.
 
-```json
-{
-  "startTimeEpochMillis": 0,
-  "endTimeEpochMillis": 0,
-  "repeatIntervalMillis": 1000,
-  "repeatCount": 2,
-  "jobInfo": {
-    "jobName": "My Job Name",
-    "jobGroup": "My Job Group",
-    "jobDescription": "Description of Job",
-    "postUrl": "http://localhost:8080/scheduler/echo",
-    "postPayload": "Hello Scheduler"
-  }
-}
-```
 | Property | Description |
 | --- | --- |
-| startTimeEpochMillis | When to start the schedule |
-| git diff | Show file differences that haven't been staged |
-
+| startTimeEpochMillis | When to start the schedule in Epoch Millis. 0 For when scheduler recieves the request. |
+| endTimeEpochMillis | When to end the schedule. Schedule will end after all repeat intervals are completed or end time is reached. |
+| repeatIntervalMillis | Time between triggering the schedule again. |
+| repeatCount | How many times to repeat. 0 for execute once and do not repeat. |
+| jobInfo.jobName | Name of job, name + group form a unique key. Can be used to perform CRUD operations on job |
+| jobInfo.jobGroup | Group of job, name + group form a unique key. Can be used to perform CRUD operations on job |
+| jobInfo.jobDescription | A field to describe your job. |
+| jobInfo.postUrl | When the job executes, the URL it will post to. |
+| jobInfo.postPayload | When the job executes, the payload it will send. |
 
 #### Configure with In memory datbase.
 Use these settings in application.properties
