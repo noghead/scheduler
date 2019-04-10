@@ -72,7 +72,7 @@ What is happening
 | jobInfo.postUrl | When the job executes, the URL it will post to. |
 | jobInfo.postPayload | When the job executes, the payload it will send. |
 
-#### Configure with In memory datbase.
+### Configure with In memory datbase.
 Use these settings in application.properties
 ```
 spring.datasource.url=jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -80,7 +80,7 @@ spring.datasource.driverClassName=org.h2.Driver
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 ```
 
-#### Configure with mysql database.
+### Configure with mysql database.
 Use these settings in application.properties. Replace values for your database.
 ```
 spring.quartz.job-store-type=jdbc
