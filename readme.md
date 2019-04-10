@@ -4,7 +4,7 @@ This scheduler is a spring boot application that allows you to schedule anything
 #### Some Use Cases
 - Need to trigger an event at some specific time with or without repetitions.  Use scheduler to create a job that POSTs a payload to your URL at a specific time.
 - Need to retry after some time. Something failed, use the scheduler to send you an event some time in the future.
-- One microservice needs to send an event to another; but not immidiately.
+- One microservice needs to send an event to another; immidiately or later.
 
 ## Getting started
 The application is ready to build and use after checkout. By default it will use an in memory database to save schedules. This is intended to be used for testing purposes. 
