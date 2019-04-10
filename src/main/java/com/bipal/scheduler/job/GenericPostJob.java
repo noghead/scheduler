@@ -44,7 +44,7 @@ public class GenericPostJob implements Job {
                 .addHeader("Content-type", "application/json")
                 .setBody(payload);
 
-        //requestBuilder.execute();
+        requestBuilder.execute();
 
         logger.info("Scheduled Job Finished Executing: {}", context.getJobDetail().getDescription());
     }
