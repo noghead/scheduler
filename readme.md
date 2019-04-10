@@ -1,10 +1,9 @@
 # About the Project
-This scheduler is a spring boot application that uses the [Quartz](https://github.com/quartz-scheduler).
-Intended to be used to schedule anything given a schedule, url, and payload.
+This scheduler is a spring boot application that allows you to schedule anything given a schedule, url, and payload. It is powered by [Quartz](https://github.com/quartz-scheduler).
 
 ## Getting started
-The application is ready build and use after checkout. By default it will use an in memory database to save schedules. This is intended to be used for testing purposes. 
-For persisted storage, see section in application.properties to use mysql.
+The application is ready to build and use after checkout. By default it will use an in memory database to save schedules. This is intended to be used for testing purposes. 
+For persisted storage, see comments in application.properties or see section below about configuring with mysql.
 
 After checking out the repo*
 1. Open a terminal.
