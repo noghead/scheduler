@@ -2,7 +2,7 @@ package com.bipal.scheduler.service;
 
 import com.bipal.scheduler.job.GenericPostJob;
 import com.bipal.scheduler.model.JobInfo;
-import com.bipal.scheduler.model.Schedule;
+import com.bipal.scheduler.model.ScheduleJobPayload;
 import com.bipal.scheduler.model.SchedulerConstants;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -30,8 +30,8 @@ public class SchedulerServiceImpl implements SchedulerService {
     }
 
     @Override
-    public JobKey schedule(Schedule schedule) throws SchedulerException {
-        JobInfo jobInfo = schedule.getJobInfo();
+    public JobKey schedule(ScheduleJobPayload scheduleJobPayload) throws SchedulerException {
+        JobInfo jobInfo = scheduleJobPayload.getJobInfo();
         JobKey jobKey = new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup());
 
         JobDetail jobDetail = JobBuilder.newJob(GenericPostJob.class)
@@ -41,7 +41,7 @@ public class SchedulerServiceImpl implements SchedulerService {
                 .withDescription(jobInfo.getJobDescription())
                 .build();
 
-        SimpleTrigger trigger = createTrigger(jobDetail, schedule, jobInfo);
+        SimpleTrigger trigger = createTrigger(jobDetail, scheduleJobPayload, jobInfo);
 
         if (scheduler.checkExists(jobKey)) {
             scheduler.deleteJob(jobKey);
@@ -51,9 +51,9 @@ public class SchedulerServiceImpl implements SchedulerService {
         return trigger.getJobKey();
     }
 
-    private SimpleTrigger createTrigger(JobDetail jobDetail, Schedule schedule, JobInfo jobInfo) {
-        Date startTime = schedule.getStartTimeEpochMillis() == 0L ? new Date() : new Date(schedule.getStartTimeEpochMillis());
-        Date endTime = schedule.getEndTimeEpochMillis() == 0L ? null : new Date(schedule.getEndTimeEpochMillis());
+    private SimpleTrigger createTrigger(JobDetail jobDetail, ScheduleJobPayload scheduleJobPayload, JobInfo jobInfo) {
+        Date startTime = scheduleJobPayload.getStartTimeEpochMillis() == 0L ? new Date() : new Date(scheduleJobPayload.getStartTimeEpochMillis());
+        Date endTime = scheduleJobPayload.getEndTimeEpochMillis() == 0L ? null : new Date(scheduleJobPayload.getEndTimeEpochMillis());
 
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail)
@@ -62,8 +62,8 @@ public class SchedulerServiceImpl implements SchedulerService {
                 .startAt(startTime)
                 .endAt(endTime)
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                        .withIntervalInMilliseconds(schedule.getRepeatIntervalMillis())
-                        .withRepeatCount(schedule.getRepeatCount())
+                        .withIntervalInMilliseconds(scheduleJobPayload.getRepeatIntervalMillis())
+                        .withRepeatCount(scheduleJobPayload.getRepeatCount())
                         .withMisfireHandlingInstructionFireNow())
                 .build();
 

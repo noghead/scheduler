@@ -1,7 +1,7 @@
 package com.bipal.scheduler.controller;
 
 import com.bipal.scheduler.model.JobInfo;
-import com.bipal.scheduler.model.Schedule;
+import com.bipal.scheduler.model.ScheduleJobPayload;
 import com.bipal.scheduler.service.SchedulerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -48,52 +48,52 @@ public class SchedulerControllerTest {
     public void schedule() throws Exception {
         long now = System.currentTimeMillis();
         JobInfo jobInfo = new JobInfo("Jerb", "Good_Job", "They Tuk Our Jerbs!", "http://localhost:8080/test", "{}");
-        Schedule schedule = new Schedule(now, now + 1000, 100, 1, jobInfo );
-        String url = "/scheduler/schedule";
-        String payload = objectMapper.writeValueAsString(schedule);
+        ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(now, now + 1000, 100, 1, jobInfo );
+        String url = "/scheduler/scheduleJobPayload";
+        String payload = objectMapper.writeValueAsString(scheduleJobPayload);
         this.mockMvc.perform(
                 post(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().is2xxSuccessful());
 
-        verify(schedulerService).schedule(schedule);
+        verify(schedulerService).schedule(scheduleJobPayload);
     }
 
     @Test
     public void scheduleWithBadJobDetails() throws Exception {
         long now = System.currentTimeMillis();
         JobInfo jobInfo = new JobInfo("Jerb", "Good_Job", "They Tuk Our Jerbs!", "http://localhost:8080/test", "{}");
-        Schedule schedule = new Schedule(now, now + 1000, 100, 1, jobInfo );
-        String url = "/scheduler/schedule";
-        String payload = objectMapper.writeValueAsString(schedule);
+        ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(now, now + 1000, 100, 1, jobInfo );
+        String url = "/scheduler/scheduleJobPayload";
+        String payload = objectMapper.writeValueAsString(scheduleJobPayload);
 
-        when(schedulerService.schedule(schedule)).thenThrow(new IllegalArgumentException("Test"));
+        when(schedulerService.schedule(scheduleJobPayload)).thenThrow(new IllegalArgumentException("Test"));
         this.mockMvc.perform(
                 post(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isBadRequest());
 
-        verify(schedulerService).schedule(schedule);
+        verify(schedulerService).schedule(scheduleJobPayload);
     }
 
     @Test
     public void scheduleWithThrowsSchedulerException() throws Exception {
         long now = System.currentTimeMillis();
         JobInfo jobInfo = new JobInfo("Jerb", "Good_Job", "They Tuk Our Jerbs!", "http://localhost:8080/test", "{}");
-        Schedule schedule = new Schedule(now, now + 1000, 100, 1, jobInfo );
-        String url = "/scheduler/schedule";
-        String payload = objectMapper.writeValueAsString(schedule);
+        ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(now, now + 1000, 100, 1, jobInfo );
+        String url = "/scheduler/scheduleJobPayload";
+        String payload = objectMapper.writeValueAsString(scheduleJobPayload);
 
-        when(schedulerService.schedule(schedule)).thenThrow(new SchedulerException("Test"));
+        when(schedulerService.schedule(scheduleJobPayload)).thenThrow(new SchedulerException("Test"));
         this.mockMvc.perform(
                 post(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isInternalServerError());
 
-        verify(schedulerService).schedule(schedule);
+        verify(schedulerService).schedule(scheduleJobPayload);
     }
 
 }

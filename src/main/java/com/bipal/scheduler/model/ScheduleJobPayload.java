@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Schedule {
+public class ScheduleJobPayload {
     private long startTimeEpochMillis;
     private long endTimeEpochMillis;
     private int repeatIntervalMillis;
@@ -14,7 +14,7 @@ public class Schedule {
 
     private JobInfo jobInfo;
 
-    public Schedule(long startTimeEpochMillis, long endTimeEpochMillis, int repeatIntervalMillis, int repeatCount, JobInfo jobInfo) {
+    public ScheduleJobPayload(long startTimeEpochMillis, long endTimeEpochMillis, int repeatIntervalMillis, int repeatCount, JobInfo jobInfo) {
         this.startTimeEpochMillis = startTimeEpochMillis;
         this.endTimeEpochMillis = endTimeEpochMillis;
         this.repeatIntervalMillis = repeatIntervalMillis;
@@ -22,7 +22,7 @@ public class Schedule {
         this.jobInfo = jobInfo;
     }
 
-    private Schedule() {
+    private ScheduleJobPayload() {
     }
 
     public long getStartTimeEpochMillis() {
@@ -49,11 +49,11 @@ public class Schedule {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Schedule schedule = (Schedule) o;
-        return startTimeEpochMillis == schedule.startTimeEpochMillis &&
-                endTimeEpochMillis == schedule.endTimeEpochMillis &&
-                repeatIntervalMillis == schedule.repeatIntervalMillis &&
-                repeatCount == schedule.repeatCount &&
-                Objects.equals(jobInfo, schedule.jobInfo);
+        ScheduleJobPayload scheduleJobPayload = (ScheduleJobPayload) o;
+        return startTimeEpochMillis == scheduleJobPayload.startTimeEpochMillis &&
+                endTimeEpochMillis == scheduleJobPayload.endTimeEpochMillis &&
+                repeatIntervalMillis == scheduleJobPayload.repeatIntervalMillis &&
+                repeatCount == scheduleJobPayload.repeatCount &&
+                Objects.equals(jobInfo, scheduleJobPayload.jobInfo);
     }
 }

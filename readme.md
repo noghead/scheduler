@@ -1,5 +1,5 @@
 # About the Project
-This scheduler is a spring boot application that allows you to schedule anything given a schedule, url, and payload. It is powered by [Quartz](https://github.com/quartz-scheduler).
+This scheduler is a spring boot application that allows you to scheduleJobPayload anything given a scheduleJobPayload, url, and payload. It is powered by [Quartz](https://github.com/quartz-scheduler).
 
 #### Some Use Cases
 - Need to trigger an event at some specific time with or without repetitions.  Use scheduler to create a job that POSTs a payload to your URL at a specific time.
@@ -20,9 +20,9 @@ After checking out the repo*
 *This runs on windows as well. Use gradlew.bat in step 3 to run.
 
 #### Quick Demo.
-Once the application is running. You can see the schedule's swagger page at http://localhost:8080/swagger-ui.html
+Once the application is running. You can see the scheduleJobPayload's swagger page at http://localhost:8080/swagger-ui.html
 
-Use this JSON payload in swagger (or postman) to POST to http://localhost:8080/scheduler/schedule
+Use this JSON payload in swagger (or postman) to POST to http://localhost:8080/scheduler/scheduleJobPayload
 ```json
 {
   "startTimeEpochMillis": 0,
@@ -41,7 +41,7 @@ Use this JSON payload in swagger (or postman) to POST to http://localhost:8080/s
 
 Alternatively,  you can use curl.
 ```
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"endTimeEpochMillis":0,"jobInfo":{"jobDescription":"Description of Job","jobGroup":"My Job Group","jobName":"My Job Name","postPayload":"Hello Scheduler","postUrl":"http://localhost:8080/scheduler/echo"},"repeatCount":2,"repeatIntervalMillis":1000,"startTimeEpochMillis":0}' 'http://localhost:8080/scheduler/schedule'
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"endTimeEpochMillis":0,"jobInfo":{"jobDescription":"Description of Job","jobGroup":"My Job Group","jobName":"My Job Name","postPayload":"Hello Scheduler","postUrl":"http://localhost:8080/scheduler/echo"},"repeatCount":2,"repeatIntervalMillis":1000,"startTimeEpochMillis":0}' 'http://localhost:8080/scheduler/scheduleJobPayload'
 ```
 
 You should see this output from the application:
@@ -67,9 +67,9 @@ What is happening
 
 | Property | Description |
 | --- | --- |
-| startTimeEpochMillis | When to start the schedule in Epoch Millis. 0 For when scheduler recieves the request. |
-| endTimeEpochMillis | When to end the schedule. Schedule will end after all repeat intervals are completed or end time is reached. |
-| repeatIntervalMillis | Time between triggering the schedule again. |
+| startTimeEpochMillis | When to start the scheduleJobPayload in Epoch Millis. 0 For when scheduler recieves the request. |
+| endTimeEpochMillis | When to end the scheduleJobPayload. Schedule will end after all repeat intervals are completed or end time is reached. |
+| repeatIntervalMillis | Time between triggering the scheduleJobPayload again. |
 | repeatCount | How many times to repeat. 0 for execute once and do not repeat. |
 | jobInfo.jobName | Name of job, name + group form a unique key. Can be used to perform CRUD operations on job |
 | jobInfo.jobGroup | Group of job, name + group form a unique key. Can be used to perform CRUD operations on job |

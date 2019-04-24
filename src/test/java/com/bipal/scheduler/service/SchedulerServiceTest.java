@@ -1,7 +1,7 @@
 package com.bipal.scheduler.service;
 
 import com.bipal.scheduler.model.JobInfo;
-import com.bipal.scheduler.model.Schedule;
+import com.bipal.scheduler.model.ScheduleJobPayload;
 import com.bipal.scheduler.model.SchedulerConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +44,9 @@ public class SchedulerServiceTest {
         int repeatCount = 2;
 
         JobInfo jobInfo = new JobInfo("test", "group", "test job", "testurl.com/test", "{\"hello\"}");
-        Schedule schedule = new Schedule(startTime, endTime, repeatInterval, repeatCount, jobInfo);
+        ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(startTime, endTime, repeatInterval, repeatCount, jobInfo);
 
-        JobKey jobKey = schedulerService.schedule(schedule);
+        JobKey jobKey = schedulerService.schedule(scheduleJobPayload);
 
         ArgumentCaptor<JobDetail> captorJobDetails = ArgumentCaptor.forClass(JobDetail.class);
         ArgumentCaptor<Trigger> captorTrigger = ArgumentCaptor.forClass(Trigger.class);
@@ -72,9 +72,9 @@ public class SchedulerServiceTest {
         int repeatCount = 2;
 
         JobInfo jobInfo = new JobInfo(null, null, "test job", "testurl.com/test", "{\"hello\"}");
-        Schedule schedule = new Schedule(startTime, endTime, repeatInterval, repeatCount, jobInfo);
+        ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(startTime, endTime, repeatInterval, repeatCount, jobInfo);
 
-        JobKey jobKey = schedulerService.schedule(schedule);
+        JobKey jobKey = schedulerService.schedule(scheduleJobPayload);
     }
 
     @Test

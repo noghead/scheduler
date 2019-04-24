@@ -1,6 +1,6 @@
 package com.bipal.scheduler.controller;
 
-import com.bipal.scheduler.model.Schedule;
+import com.bipal.scheduler.model.ScheduleJobPayload;
 import com.bipal.scheduler.service.SchedulerService;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
@@ -24,14 +24,14 @@ public class SchedulerController {
     }
 
     @RequestMapping(value = "/schedule", method = RequestMethod.POST)
-    public ResponseEntity<Schedule> schedule(@RequestBody Schedule schedule) {
+    public ResponseEntity<ScheduleJobPayload> schedule(@RequestBody ScheduleJobPayload scheduleJobPayload) {
         try {
-            schedulerService.schedule(schedule);
-            return ResponseEntity.ok(schedule);
+            schedulerService.schedule(scheduleJobPayload);
+            return ResponseEntity.ok(scheduleJobPayload);
         } catch (SchedulerException e) {
-            return new ResponseEntity<>(schedule, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(scheduleJobPayload, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(schedule, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(scheduleJobPayload, HttpStatus.BAD_REQUEST);
         }
     }
 
