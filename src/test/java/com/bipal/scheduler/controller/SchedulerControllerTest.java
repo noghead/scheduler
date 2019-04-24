@@ -49,7 +49,7 @@ public class SchedulerControllerTest {
         long now = System.currentTimeMillis();
         JobInfo jobInfo = new JobInfo("Jerb", "Good_Job", "They Tuk Our Jerbs!", "http://localhost:8080/test", "{}");
         ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(now, now + 1000, 100, 1, jobInfo );
-        String url = "/scheduler/scheduleJobPayload";
+        String url = "/scheduler/schedule";
         String payload = objectMapper.writeValueAsString(scheduleJobPayload);
         this.mockMvc.perform(
                 post(url)
@@ -65,7 +65,7 @@ public class SchedulerControllerTest {
         long now = System.currentTimeMillis();
         JobInfo jobInfo = new JobInfo("Jerb", "Good_Job", "They Tuk Our Jerbs!", "http://localhost:8080/test", "{}");
         ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(now, now + 1000, 100, 1, jobInfo );
-        String url = "/scheduler/scheduleJobPayload";
+        String url = "/scheduler/schedule";
         String payload = objectMapper.writeValueAsString(scheduleJobPayload);
 
         when(schedulerService.schedule(scheduleJobPayload)).thenThrow(new IllegalArgumentException("Test"));
@@ -83,7 +83,7 @@ public class SchedulerControllerTest {
         long now = System.currentTimeMillis();
         JobInfo jobInfo = new JobInfo("Jerb", "Good_Job", "They Tuk Our Jerbs!", "http://localhost:8080/test", "{}");
         ScheduleJobPayload scheduleJobPayload = new ScheduleJobPayload(now, now + 1000, 100, 1, jobInfo );
-        String url = "/scheduler/scheduleJobPayload";
+        String url = "/scheduler/schedule";
         String payload = objectMapper.writeValueAsString(scheduleJobPayload);
 
         when(schedulerService.schedule(scheduleJobPayload)).thenThrow(new SchedulerException("Test"));
