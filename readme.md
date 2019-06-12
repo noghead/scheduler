@@ -1,5 +1,5 @@
 # About the Project
-This scheduler is a spring boot application that allows you to scheduleJobPayload anything given a scheduleJobPayload, url, and payload. It is powered by [Quartz](https://github.com/quartz-scheduler).
+This scheduler is a spring boot application that allows you to schedule anything given a scheduleJobPayload, url, and payload. It is powered by [Quartz](https://github.com/quartz-scheduler).
 
 #### Some Use Cases
 - Need to trigger an event at some specific time with or without repetitions.  Use scheduler to create a job that POSTs a payload to your URL at a specific time.
